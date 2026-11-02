@@ -6,16 +6,7 @@ Ein Klick auf **Im Webplayer hören** öffnet den passenden Sender im [Universal
 
 ## Einbindung
 
-```html
-<iframe
-  src="https://lfm-player.github.io/now-playing/"
-  width="100%"
-  height="180"
-  style="border:0; max-width:640px;"
-  loading="lazy"
-  title="laut.fm Now Playing">
-</iframe>
-```
+
 
 Der Besucher gibt den laut.fm-Stationsnamen direkt im Widget ein.
 
