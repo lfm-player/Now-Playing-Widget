@@ -33,6 +33,7 @@ Beispiel für den Sender eins:
   title="Now Playing">
 </iframe>
 
+
 Ersetze eins einfach durch den Namen deines eigenen laut.fm-Senders.
 
 Tipp: Passe bei Bedarf die Höhe (height) und die maximale Breite (max-width) an das Design deiner Homepage an.
