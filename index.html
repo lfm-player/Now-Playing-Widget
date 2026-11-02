@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#081426">
 <title>laut.fm Now Playing</title>
 <style>
-:root{color-scheme:dark;--text:#f4f8ff;--muted:#9db0ca;--blue:#3988ff;--cyan:#48d6f4}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:transparent;}body{padding:10px;background:transparent;color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+:root{color-scheme:normal;--text:#f4f8ff;--muted:#9db0ca;--blue:#3988ff;--cyan:#48d6f4}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:transparent!important;}body{padding:10px;background:transparent!important;color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
 .panel{width:100%;border:1px solid rgba(148,184,230,.17);border-radius:17px;background:radial-gradient(circle at 0 0,rgba(57,136,255,.18),transparent 42%),linear-gradient(125deg,#10233d,#0b1b30 75%);box-shadow:0 9px 28px rgba(0,0,0,.22);overflow:hidden}
 .entry{min-height:112px;display:flex;align-items:center;gap:14px;padding:16px 18px;position:relative}
 .entry:before,.widget:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(180deg,var(--cyan),var(--blue))}
@@ -24,7 +24,7 @@ button:hover{filter:brightness(1.08);transform:translateY(-1px)}button:active{tr
 .details{min-width:0}.topline{display:flex;align-items:center;gap:8px;margin-bottom:7px}.live{display:inline-flex;align-items:center;gap:6px;color:#73d8ff;font-size:10px;font-weight:850;letter-spacing:1.25px;text-transform:uppercase}.live:before{content:"";width:6px;height:6px;border-radius:50%;background:#45d5ff;box-shadow:0 0 0 4px rgba(69,213,255,.12)}
 .station{color:var(--muted);font-size:11px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .artist{margin:0 0 3px;color:var(--text);font-size:16px;font-weight:800;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.track{margin:0;color:#b7c7dc;font-size:13px;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.track{display:block;margin:0;color:#b7c7dc;font-size:13px;line-height:1.35;overflow:hidden;white-space:nowrap;max-width:100%}.track-text{display:inline-block;white-space:nowrap}.track.scrolling .track-text{animation:track-marquee 16s linear infinite}@keyframes track-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .action{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 15px;border:1px solid rgba(123,177,255,.28);border-radius:999px;color:white;text-decoration:none;background:linear-gradient(135deg,#2678ed,#3d9cff);box-shadow:0 6px 18px rgba(37,120,237,.24);font-size:12px;font-weight:800;white-space:nowrap;transition:transform .18s ease,filter .18s ease}
 .action:hover{transform:translateY(-2px);filter:brightness(1.09)}.action:active{transform:scale(.97)}.action svg{width:13px;height:13px;fill:currentColor}
 [hidden]{display:none!important}
@@ -49,7 +49,7 @@ button:hover{filter:brightness(1.08);transform:translateY(-1px)}button:active{tr
   <div class="art" id="art"><span class="fallback" aria-hidden="true">♫</span></div>
   <section class="details" aria-live="polite">
     <div class="topline"><span class="live">Now Playing</span><span class="station" id="station">laut.fm</span></div>
-    <p class="artist" id="artist">Lade Sender …</p><p class="track" id="track">Aktuelle Musikinformationen werden geladen</p>
+    <p class="artist" id="artist">Lade Sender …</p><p class="track" id="track"><span class="track-text">Aktuelle Musikinformationen werden geladen</span></p>
   </section>
   <a class="action" id="open-player" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Im Webplayer hören</a>
 </section>
@@ -60,8 +60,8 @@ const $=id=>document.getElementById(id);
 const params=new URLSearchParams(location.search);
 const initialStation=(params.get("station")||"").trim().toLowerCase();
 const form=$("station-form"),input=$("station-input"),entry=$("entry-screen"),widget=$("widget-screen");
-const stationEl=$("station"),artistEl=$("artist"),trackEl=$("track"),artEl=$("art"),openEl=$("open-player");
-let station="",stationLogo="",refreshTimer=null;
+const stationEl=$("station"),artistEl=$("artist"),trackEl=$("track"),trackText=trackEl.querySelector(".track-text"),artEl=$("art"),openEl=$("open-player");
+let station="",stationLogo="",refreshTimer=null;\nfunction setTrack(value){const text=String(value||"Aktuell kein Titel verfügbar");trackEl.classList.remove("scrolling");trackText.textContent=text;requestAnimationFrame(()=>{if(trackText.scrollWidth>trackEl.clientWidth+4){trackText.textContent=text+"　　 •　　 "+text;trackEl.classList.add("scrolling")}else{trackText.textContent=text}})}
 input.value=initialStation;
 function showImage(url){
  if(!url){artEl.innerHTML='<span class="fallback" aria-hidden="true">♫</span>';return}
@@ -74,15 +74,15 @@ async function loadStation(){
  try{const r=await fetch("https://api.laut.fm/station/"+encodeURIComponent(station),{cache:"no-store"});if(!r.ok)throw Error("Station nicht gefunden");
  const d=await r.json();stationEl.textContent=d.display_name||d.name||station;
  stationLogo=d.images&&d.images.station?d.images.station:"";if(stationLogo)showImage(stationLogo);
- }catch(e){stationEl.textContent=station;artistEl.textContent="Senderinformationen nicht verfügbar";trackEl.textContent="Stationsnamen bitte prüfen";console.warn(e)}
+ }catch(e){stationEl.textContent=station;artistEl.textContent="Senderinformationen nicht verfügbar";setTrack("Stationsnamen bitte prüfen");console.warn(e)}
 }
 async function loadSong(){
  try{const r=await fetch("https://api.laut.fm/station/"+encodeURIComponent(station)+"/current_song",{cache:"no-store"});if(!r.ok)throw Error("Titelinformationen nicht verfügbar");
  const d=await r.json(),a=d.artist&&d.artist.name?d.artist.name:"";
  artistEl.textContent=a||(d.type==="song"?"Titel läuft":"laut.fm Live");
- trackEl.textContent=d.title||"Aktuell kein Titel verfügbar";
+ setTrack(d.title||"Aktuell kein Titel verfügbar");
  const cover=d.type==="song"&&d.artist?(d.artist.image||d.artist.thumb||""):"";showImage(cover||stationLogo);
- }catch(e){artistEl.textContent="Titel momentan nicht verfügbar";trackEl.textContent="Bitte später erneut versuchen";if(stationLogo)showImage(stationLogo);console.warn(e)}
+ }catch(e){artistEl.textContent="Titel momentan nicht verfügbar";setTrack("Bitte später erneut versuchen");if(stationLogo)showImage(stationLogo);console.warn(e)}
 }
 function openStation(value){
  const chosen=String(value||"").trim().toLowerCase();
@@ -90,7 +90,7 @@ function openStation(value){
  station=chosen;$("entry-error").textContent="";entry.hidden=true;widget.hidden=false;
  const url=new URL(location.href);url.searchParams.set("station",station);history.replaceState({}, "", url);
  openEl.href="https://lfm-player.github.io/stream.laut.fm/?station="+encodeURIComponent(station);
- stationEl.textContent=station;artistEl.textContent="Lade aktuellen Titel …";trackEl.textContent="Senderinformationen werden geladen";stationLogo="";
+ stationEl.textContent=station;artistEl.textContent="Lade aktuellen Titel …";setTrack("Senderinformationen werden geladen");stationLogo="";
  showImage("");
  loadStation();loadSong();
  if(refreshTimer)clearInterval(refreshTimer);refreshTimer=setInterval(loadSong,15000);
