@@ -30,7 +30,7 @@ Beispiel für den Sender eins:
   height="140"
   style="border:0; max-width:640px;"
   loading="lazy"
-  title="Shout FM – Now Playing">
+  title="Now Playing">
 </iframe>
 
 Ersetze eins einfach durch den Namen deines eigenen laut.fm-Senders.
