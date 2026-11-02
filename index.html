@@ -4,39 +4,107 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#081426">
-<title>laut.fm Now Playing</title>
+<title>laut.fm Widget-Generator</title>
 <style>
-:root{color-scheme:normal;--text:#f4f8ff;--muted:#9db0ca;--blue:#3988ff;--cyan:#48d6f4}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:transparent!important;}body{padding:10px;background:transparent!important;color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
-.panel{width:100%;container-type:inline-size;border:1px solid rgba(148,184,230,.17);border-radius:17px;background:radial-gradient(circle at 0 0,rgba(57,136,255,.18),transparent 42%),linear-gradient(125deg,#10233d,#0b1b30 75%);box-shadow:0 9px 28px rgba(0,0,0,.22);overflow:hidden}
+:root{color-scheme:dark;--text:#f4f8ff;--muted:#9db0ca;--blue:#3988ff;--cyan:#48d6f4;--panel-bg:#10233d;--panel-bg2:#0b1b30;--page:#07101f}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:transparent!important}
+body{padding:10px;background:transparent!important;color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+.panel{width:100%;container-type:inline-size;border:1px solid rgba(148,184,230,.17);border-radius:17px;background:radial-gradient(circle at 0 0,color-mix(in srgb,var(--blue) 18%,transparent),transparent 42%),linear-gradient(125deg,var(--panel-bg),var(--panel-bg2) 75%);box-shadow:0 9px 28px rgba(0,0,0,.22);overflow:hidden}
 .entry{min-height:112px;display:flex;align-items:center;gap:14px;padding:16px 18px;position:relative}
 .entry:before,.widget:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(180deg,var(--cyan),var(--blue))}
 .entry-copy{min-width:0;flex:1}.entry-title{margin:0 0 5px;font-size:15px;font-weight:800}.entry-sub{margin:0;color:var(--muted);font-size:12px;line-height:1.4}
 .entry-form{display:flex;gap:8px;margin-top:11px}
 input{min-width:0;flex:1;padding:10px 12px;border:1px solid rgba(148,184,230,.24);border-radius:10px;background:rgba(3,12,25,.65);color:var(--text);font:inherit;font-size:13px;outline:none}
-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(57,136,255,.15)}
-button{border:0;border-radius:10px;padding:0 15px;color:#fff;background:linear-gradient(135deg,#2678ed,#3d9cff);font:inherit;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;box-shadow:0 6px 18px rgba(37,120,237,.24);transition:transform .18s ease,filter .18s ease}
+input:focus{border-color:var(--blue);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 18%,transparent)}
+button{border:0;border-radius:10px;padding:0 15px;color:#fff;background:linear-gradient(135deg,var(--blue),color-mix(in srgb,var(--blue) 72%,#fff));font:inherit;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;box-shadow:0 6px 18px color-mix(in srgb,var(--blue) 24%,transparent);transition:transform .18s ease,filter .18s ease}
 button:hover{filter:brightness(1.08);transform:translateY(-1px)}button:active{transform:scale(.97)}
 .error{margin:7px 0 0;color:#ffb8c0;font-size:11px}
 .widget{min-height:112px;display:grid;grid-template-columns:88px minmax(0,1fr) auto;align-items:center;gap:15px;padding:13px 16px 13px 13px;overflow:hidden;position:relative}
-.art{width:88px;height:88px;display:grid;place-items:center;overflow:hidden;border:1px solid rgba(255,255,255,.12);border-radius:13px;background:linear-gradient(145deg,#1b4778,#0b1930);box-shadow:0 5px 16px rgba(0,0,0,.25)}
-.art img{width:100%;height:100%;object-fit:cover;display:block}.fallback{color:#8dbbff;font-size:27px}
-.details{min-width:0}.topline{display:flex;align-items:center;gap:8px;margin-bottom:7px}.live{display:inline-flex;align-items:center;gap:6px;color:#73d8ff;font-size:10px;font-weight:850;letter-spacing:1.25px;text-transform:uppercase}.live:before{content:"";width:6px;height:6px;border-radius:50%;background:#45d5ff;box-shadow:0 0 0 4px rgba(69,213,255,.12)}
+.art{width:88px;height:88px;display:grid;place-items:center;overflow:hidden;border:1px solid rgba(255,255,255,.12);border-radius:13px;background:linear-gradient(145deg,color-mix(in srgb,var(--blue) 45%,#1b4778),#0b1930);box-shadow:0 5px 16px rgba(0,0,0,.25)}
+.art img{width:100%;height:100%;object-fit:cover;display:block}.fallback{color:var(--cyan);font-size:27px}
+.details{min-width:0}.topline{display:flex;align-items:center;gap:8px;margin-bottom:7px}.live{display:inline-flex;align-items:center;gap:6px;color:var(--cyan);font-size:10px;font-weight:850;letter-spacing:1.25px;text-transform:uppercase}.live:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 4px color-mix(in srgb,var(--cyan) 12%,transparent)}
 .station{color:var(--muted);font-size:11px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .artist{margin:0 0 3px;color:var(--text);font-size:16px;font-weight:800;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.track{display:block;min-width:0;width:100%;margin:0;color:#b7c7dc;font-size:13px;line-height:1.35;overflow:hidden;white-space:nowrap}.track-text{display:inline-block;width:max-content;max-width:none;white-space:nowrap}.track.scrolling .track-text{padding-right:24px;animation:track-marquee var(--marquee-duration,18s) linear infinite}@keyframes track-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.action{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 15px;border:1px solid rgba(123,177,255,.28);border-radius:999px;color:white;text-decoration:none;background:linear-gradient(135deg,#2678ed,#3d9cff);box-shadow:0 6px 18px rgba(37,120,237,.24);font-size:12px;font-weight:800;white-space:nowrap;transition:transform .18s ease,filter .18s ease}
+.track{display:block;min-width:0;width:100%;margin:0;color:color-mix(in srgb,var(--text) 76%,var(--muted));font-size:13px;line-height:1.35;overflow:hidden;white-space:nowrap}.track-text{display:inline-block;width:max-content;max-width:none;white-space:nowrap}.track.scrolling .track-text{padding-right:24px;animation:track-marquee var(--marquee-duration,18s) linear infinite}@keyframes track-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.action{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 15px;border:1px solid color-mix(in srgb,var(--blue) 35%,transparent);border-radius:999px;color:white;text-decoration:none;background:linear-gradient(135deg,var(--blue),color-mix(in srgb,var(--blue) 72%,#fff));box-shadow:0 6px 18px color-mix(in srgb,var(--blue) 24%,transparent);font-size:12px;font-weight:800;white-space:nowrap;transition:transform .18s ease,filter .18s ease}
 .action:hover{transform:translateY(-2px);filter:brightness(1.09)}.action:active{transform:scale(.97)}.action svg{width:13px;height:13px;fill:currentColor}
 [hidden]{display:none!important}
+.builder{max-width:900px;margin:0 auto;padding:18px;display:grid;gap:16px}
+.builder-head h1{font-size:20px;margin:0 0 6px}.builder-head p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
+.builder-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.9fr);gap:16px}
+.settings,.preview-card,.code-card{border:1px solid rgba(148,184,230,.16);background:rgba(3,12,25,.34);border-radius:14px;padding:15px;min-width:0}
+.settings h2,.preview-card h2,.code-card h2{font-size:14px;margin:0 0 13px}
+.field{display:grid;gap:6px;margin-bottom:13px}.field label{font-size:11px;color:var(--muted);font-weight:700}.field input[type=text]{width:100%}
+.color-row{display:grid;grid-template-columns:1fr 54px;gap:8px;align-items:center}.color-row input[type=color]{width:54px;height:38px;padding:3px;border:1px solid rgba(148,184,230,.24);border-radius:9px;background:#0b1b30;cursor:pointer}
+.presets{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.preset{width:25px;height:25px;padding:0;border:2px solid rgba(255,255,255,.35);border-radius:50%;box-shadow:none}.preset[aria-pressed=true]{outline:2px solid white;outline-offset:2px}
+.checkline{display:flex;align-items:center;gap:9px;font-size:12px;color:var(--text);margin:7px 0 14px}.checkline input{flex:0;width:16px;height:16px;accent-color:var(--blue)}
+.preview-frame{width:100%;height:170px;border:1px dashed rgba(148,184,230,.35);border-radius:12px;background:repeating-conic-gradient(#142238 0% 25%,#0d192b 0% 50%) 50%/20px 20px;overflow:hidden}
+.preview-frame iframe{display:block;width:100%;height:100%;border:0}
+.hint{font-size:11px;color:var(--muted);line-height:1.45;margin:9px 0 0}
+.code-output{width:100%;min-height:100px;resize:vertical;padding:11px;border:1px solid rgba(148,184,230,.2);border-radius:10px;background:#06101e;color:#dceaff;font:11px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace}
+.copy-row{display:flex;justify-content:flex-end;margin-top:9px}
+.copy-row button{min-height:38px}
 @container (max-width:560px){.widget{grid-template-columns:64px minmax(0,1fr);gap:10px;padding:11px}.art{width:64px;height:64px;border-radius:10px}.artist{font-size:14px}.track{font-size:12px}.action{grid-column:1/-1;justify-self:stretch;width:100%;min-width:0;min-height:38px;padding:0 12px;font-size:12px}}
 @container (max-width:340px){.widget{grid-template-columns:52px minmax(0,1fr);gap:8px;padding:9px}.art{width:52px;height:52px}.live{font-size:9px;letter-spacing:.8px}.topline{gap:6px}.artist{font-size:13px}.track{font-size:11px}.action{font-size:11px;gap:6px}}
-@media(max-width:480px){body{padding:6px}.entry{display:block;padding:14px}.entry-form{margin-top:10px}.entry-form button{padding:0 12px}}
+@media(max-width:650px){.builder-grid{grid-template-columns:1fr}.builder{padding:13px}.entry{display:block;padding:14px}.entry-form{margin-top:10px}.entry-form button{padding:0 12px}}
+@media(max-width:480px){body{padding:6px}}
 @media(prefers-reduced-motion:reduce){button,.action{transition:none}.track.scrolling .track-text{animation:none}}
 </style>
 </head>
 <body>
 <main class="panel">
-<section class="entry" id="entry-screen">
+<section class="builder" id="builder-screen" hidden>
+  <header class="builder-head">
+    <h1>Dein laut.fm-Widget gestalten</h1>
+    <p>Sender und Farben auswählen, Vorschau prüfen und anschließend den fertigen Einbettungscode kopieren.</p>
+  </header>
+  <div class="builder-grid">
+    <section class="settings">
+      <h2>Widget-Einstellungen</h2>
+      <div class="field">
+        <label for="builder-station">laut.fm-Stationsname</label>
+        <input id="builder-station" type="text" value="shout_fm" autocomplete="off" spellcheck="false" placeholder="z. B. shout_fm">
+      </div>
+      <div class="field">
+        <label for="accent-picker">Akzentfarbe (Buttons, LIVE-Anzeige, Linie)</label>
+        <div class="color-row"><input id="accent-hex" type="text" value="#3988ff" maxlength="7" aria-label="Hex-Farbwert Akzentfarbe"><input id="accent-picker" type="color" value="#3988ff" aria-label="Akzentfarbe auswählen"></div>
+        <div class="presets" aria-label="Farbvorschläge">
+          <button class="preset" type="button" style="background:#3988ff" data-color="#3988ff" aria-label="Blau" aria-pressed="true"></button>
+          <button class="preset" type="button" style="background:#12bfc9" data-color="#12bfc9" aria-label="Türkis" aria-pressed="false"></button>
+          <button class="preset" type="button" style="background:#9365ed" data-color="#9365ed" aria-label="Lila" aria-pressed="false"></button>
+          <button class="preset" type="button" style="background:#ef5350" data-color="#ef5350" aria-label="Rot" aria-pressed="false"></button>
+          <button class="preset" type="button" style="background:#31b878" data-color="#31b878" aria-label="Grün" aria-pressed="false"></button>
+          <button class="preset" type="button" style="background:#ed913b" data-color="#ed913b" aria-label="Orange" aria-pressed="false"></button>
+          <button class="preset" type="button" style="background:#e65baf" data-color="#e65baf" aria-label="Pink" aria-pressed="false"></button>
+          <button class="preset" type="button" style="background:#e7edf7" data-color="#e7edf7" aria-label="Hell" aria-pressed="false"></button>
+        </div>
+      </div>
+      <div class="field">
+        <label for="bg-picker">Hintergrundfarbe</label>
+        <div class="color-row"><input id="bg-hex" type="text" value="#10233d" maxlength="7" aria-label="Hex-Farbwert Hintergrund"><input id="bg-picker" type="color" value="#10233d" aria-label="Hintergrundfarbe auswählen"></div>
+      </div>
+      <div class="field">
+        <label for="text-picker">Schriftfarbe</label>
+        <div class="color-row"><input id="text-hex" type="text" value="#f4f8ff" maxlength="7" aria-label="Hex-Farbwert Schrift"><input id="text-picker" type="color" value="#f4f8ff" aria-label="Schriftfarbe auswählen"></div>
+      </div>
+      <label class="checkline"><input id="transparent-bg" type="checkbox"> Widget-Hintergrund transparent anzeigen</label>
+    </section>
+    <section class="preview-card">
+      <h2>Live-Vorschau</h2>
+      <div class="preview-frame"><iframe id="preview-frame" title="Widget-Vorschau" loading="lazy"></iframe></div>
+      <p class="hint">Die Vorschau verwendet den eingetragenen Sender. Bei einem unbekannten Sender wird eine entsprechende Meldung angezeigt.</p>
+    </section>
+  </div>
+  <section class="code-card">
+    <h2>Einbettungscode für deine Webseite</h2>
+    <textarea class="code-output" id="embed-code" readonly aria-label="Einbettungscode"></textarea>
+    <div class="copy-row"><button id="copy-code" type="button">Code kopieren</button></div>
+    <p class="hint" id="copy-status" role="status">Der Code passt sich automatisch an deine Einstellungen an. Die Breite ist flexibel.</p>
+  </section>
+</section>
+
+<section class="entry" id="entry-screen" hidden>
   <div class="entry-copy">
     <h1 class="entry-title">Deinen laut.fm-Sender verbinden</h1>
     <p class="entry-sub">Stationsnamen eingeben, um Titel und Cover anzuzeigen.</p>
@@ -61,6 +129,18 @@ button:hover{filter:brightness(1.08);transform:translateY(-1px)}button:active{tr
 const $=id=>document.getElementById(id);
 const params=new URLSearchParams(location.search);
 const initialStation=(params.get("station")||"").trim().toLowerCase();
+const validColor=v=>/^#[0-9a-f]{6}$/i.test(v);
+function applyTheme(){
+ const accent=(params.get("accent")||"3988ff").replace("#","");
+ const bg=(params.get("bg")||"10233d").replace("#","");
+ const text=(params.get("text")||"f4f8ff").replace("#","");
+ const cyan=params.get("cyan")||"48d6f4";
+ if(/^[0-9a-f]{6}$/i.test(accent))document.documentElement.style.setProperty("--blue","#"+accent);
+ if(/^[0-9a-f]{6}$/i.test(bg))document.documentElement.style.setProperty("--panel-bg","#"+bg);
+ if(/^[0-9a-f]{6}$/i.test(text))document.documentElement.style.setProperty("--text","#"+text);
+ if(/^[0-9a-f]{6}$/i.test(cyan))document.documentElement.style.setProperty("--cyan","#"+cyan);
+ if(params.get("transparent")==="1"){$(".panel").style.background="transparent";$(".panel").style.boxShadow="none";$(".panel").style.borderColor="transparent"}
+}
 const form=$("station-form"),input=$("station-input"),entry=$("entry-screen"),widget=$("widget-screen");
 const stationEl=$("station"),artistEl=$("artist"),trackEl=$("track"),trackText=trackEl.querySelector(".track-text"),artEl=$("art"),openEl=$("open-player");
 let station="",stationLogo="",refreshTimer=null,currentTrack="Aktuell kein Titel verfügbar",trackMeasureFrame=0;
@@ -112,7 +192,52 @@ function openStation(value){
  if(refreshTimer)clearInterval(refreshTimer);refreshTimer=setInterval(loadSong,15000);
 }
 form.addEventListener("submit",e=>{e.preventDefault();openStation(input.value)});
-if(initialStation)openStation(initialStation);
+
+function setupBuilder(){
+ const builder=$("builder-screen");
+ builder.hidden=false;
+ const stationInput=$("builder-station");
+ const fields=[["accent","3988ff"],["bg","10233d"],["text","f4f8ff"]];
+ function cleanHex(v,fallback){return validColor(v)?v:fallback}
+ function makeUrl(){
+  const base=new URL(location.href);
+  base.search="";
+  base.hash="";
+  base.searchParams.set("station",(stationInput.value.trim().toLowerCase()||"shout_fm"));
+  base.searchParams.set("accent",cleanHex($("accent-hex").value,"#3988ff").slice(1));
+  base.searchParams.set("bg",cleanHex($("bg-hex").value,"#10233d").slice(1));
+  base.searchParams.set("text",cleanHex($("text-hex").value,"#f4f8ff").slice(1));
+  if($("transparent-bg").checked)base.searchParams.set("transparent","1");
+  return base.href;
+ }
+ function update(){
+  const url=makeUrl();
+  $("preview-frame").src=url;
+  const escaped=url.replace(/&/g,"&amp;").replace(/"/g,"&quot;");
+  $("embed-code").value='<iframe src="'+escaped+'" width="100%" height="150" style="border:0;max-width:100%;" scrolling="no" loading="lazy" title="laut.fm Webradio"></iframe>';
+  document.documentElement.style.setProperty("--blue",cleanHex($("accent-hex").value,"#3988ff"));
+ }
+ fields.forEach(([key,def])=>{
+  const picker=$(key+"-picker"),hex=$(key+"-hex");
+  picker.addEventListener("input",()=>{hex.value=picker.value;update()});
+  hex.addEventListener("change",()=>{hex.value=cleanHex(hex.value,"#"+def);picker.value=hex.value;update()});
+  hex.addEventListener("input",()=>{if(validColor(hex.value)){picker.value=hex.value;update()}});
+ });
+ stationInput.addEventListener("input",update);
+ $("transparent-bg").addEventListener("change",update);
+ document.querySelectorAll(".preset").forEach(btn=>btn.addEventListener("click",()=>{
+  const c=btn.dataset.color;$("accent-picker").value=c;$("accent-hex").value=c;
+  document.querySelectorAll(".preset").forEach(b=>b.setAttribute("aria-pressed",String(b===btn)));
+  update();
+ }));
+ $("copy-code").addEventListener("click",async()=>{
+  const output=$("embed-code");
+  try{await navigator.clipboard.writeText(output.value);$("copy-status").textContent="Einbettungscode wurde kopiert."}
+  catch(e){output.focus();output.select();try{document.execCommand("copy");$("copy-status").textContent="Einbettungscode wurde kopiert."}catch(_){$("copy-status").textContent="Bitte den Code markieren und manuell kopieren."}}
+ });
+ update();
+}
+if(initialStation){applyTheme();openStation(initialStation)}else{entry.hidden=true;setupBuilder()}
 </script>
 </body>
 </html>
