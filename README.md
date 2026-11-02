@@ -1,51 +1,49 @@
 # laut.fm Now Playing Widget
 
-Ein kompaktes, responsives Now-Playing-Widget für laut.fm-Radiosender. Besucher können zunächst den Stationsnamen eingeben. Danach zeigt das Widget den Sendernamen, Interpret, aktuellen Titel und ein Cover. Wenn kein Songbild verfügbar ist, wird das Senderlogo des ausgewählten Senders verwendet.
+Mit dem kostenlosen laut.fm Now Playing Widget kannst du deinen Radiosender ganz einfach auf deiner eigenen Homepage präsentieren.
 
-Ein Klick auf **Im Webplayer hören** öffnet den passenden Sender im [Universal laut.fm Webplayer](https://lfm-player.github.io/stream.laut.fm/).
+Das Widget zeigt automatisch, welcher Sender gerade läuft, welcher Interpret zu hören ist und wie der aktuelle Musiktitel heißt. Dazu wird das passende Künstlerbild oder – falls keines verfügbar ist – das Senderlogo angezeigt.
 
-## Einbindung
+**Kostenlos, unkompliziert und ohne eigene technische Infrastruktur.**
 
+Das Widget spielt selbst keine Musik ab. Die Wiedergabe erfolgt über den Universal laut.fm Webplayer.
 
+🌐 **Live ausprobieren:**  
+https://lfm-player.github.io/Now-Playing-Widget/
 
-Der Besucher gibt den laut.fm-Stationsnamen direkt im Widget ein.
+## So funktioniert es
 
-Du kannst auch einen Sender vorauswählen:
+1. Öffne das Widget.
+2. Gib den Namen deines laut.fm-Senders ein, zum Beispiel `eins`.
+3. Das Widget lädt automatisch deine Senderinformationen und den aktuell gespielten Titel.
+4. Über **„Im Webplayer hören“** können deine Besucher deinen Sender direkt im Universal laut.fm Webplayer anhören.
 
-```html
+## Für deine Homepage
+
+Wenn du das Widget für deinen eigenen Radiosender einbauen möchtest, kannst du den Stationsnamen direkt in der URL hinterlegen.
+
+Beispiel für den Sender eins:
+
 <iframe
-  src="https://lfm-player.github.io/now-playing/?station=shout_fm"
+  src="https://lfm-player.github.io/Now-Playing-Widget/?station=eins"
   width="100%"
   height="140"
   style="border:0; max-width:640px;"
   loading="lazy"
   title="Shout FM – Now Playing">
 </iframe>
-```
 
-## Funktionen
+Ersetze eins einfach durch den Namen deines eigenen laut.fm-Senders.
 
-- Eingabemaske für den Stationsnamen
-- Optionaler URL-Parameter `?station=`
-- Offizieller Sendername aus `display_name`
-- Aktueller Interpret und Titel aus der laut.fm-API
-- Künstlerbild oder Senderlogo als Fallback
-- Aktualisierung alle 15 Sekunden
-- Klick öffnet den Universalplayer mit dem ausgewählten Sender
-- Eigenständiges blaues Design, responsiv für Desktop und Mobilgeräte
-- Reines HTML, CSS und JavaScript – keine Datenbank und kein PHP
+Tipp: Passe bei Bedarf die Höhe (height) und die maximale Breite (max-width) an das Design deiner Homepage an.
 
-## API
+## Das bietet dir das Widget
 
-- `https://api.laut.fm/station/{station}`
-- `https://api.laut.fm/station/{station}/current_song`
+- Anzeige deines laut.fm-Sendernamens
+- Aktueller Interpret und Musiktitel
+- Künstlerbild oder Senderlogo
+- Automatische Aktualisierung alle 15 Sekunden
+- Direkter Zugang zum Universal laut.fm Webplayer
+- Modernes, responsives Design für PC, Tablet und Smartphone
+- Einfache Einbindung über HTML-iframe
 
-Das Widget selbst streamt keine Musik. Die Audiowiedergabe erfolgt im Universalplayer über laut.fm.
-
-## Hosting
-
-Für GitHub Pages vorgesehen. `index.html` im Repository ablegen und GitHub Pages unter **Settings → Pages** aktivieren.
-
-## Hinweise
-
-Die Verfügbarkeit von Senderdaten, Bildern und Streams hängt von laut.fm ab. Dieses Projekt ist unabhängig und keine offizielle laut.fm-Anwendung.
