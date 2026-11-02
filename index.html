@@ -138,7 +138,7 @@ function applyTheme(){
  if(/^[0-9a-f]{6}$/i.test(bg))document.documentElement.style.setProperty("--panel-bg","#"+bg);
  if(/^[0-9a-f]{6}$/i.test(text))document.documentElement.style.setProperty("--text","#"+text);
  if(/^[0-9a-f]{6}$/i.test(cyan))document.documentElement.style.setProperty("--cyan","#"+cyan);
- if(params.get("transparent")==="1"){$(".panel").style.background="transparent";$(".panel").style.boxShadow="none";$(".panel").style.borderColor="transparent"}
+ if(params.get("transparent")==="1"){document.querySelector(".panel").style.background="transparent";document.querySelector(".panel").style.boxShadow="none";document.querySelector(".panel").style.borderColor="transparent"}
 }
 const form=$("station-form"),input=$("station-input"),entry=$("entry-screen"),widget=$("widget-screen");
 const stationEl=$("station"),artistEl=$("artist"),trackEl=$("track"),trackText=trackEl.querySelector(".track-text"),artEl=$("art"),openEl=$("open-player");
@@ -274,7 +274,7 @@ function setupBuilder(){
  });
  update();
 }
-if(initialStation){$(".panel").classList.add("widget-mode");applyTheme();openStation(initialStation)}else{entry.hidden=true;setupBuilder()}
+if(initialStation){document.querySelector(".panel").classList.add("widget-mode");applyTheme();openStation(initialStation)}else{entry.hidden=true;setupBuilder()}
 </script>
 </body>
 </html>
