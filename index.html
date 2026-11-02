@@ -8,7 +8,7 @@
 <style>
 :root{color-scheme:normal;--text:#f4f8ff;--muted:#9db0ca;--blue:#3988ff;--cyan:#48d6f4}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:transparent!important;}body{padding:10px;background:transparent!important;color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
-.panel{width:100%;border:1px solid rgba(148,184,230,.17);border-radius:17px;background:radial-gradient(circle at 0 0,rgba(57,136,255,.18),transparent 42%),linear-gradient(125deg,#10233d,#0b1b30 75%);box-shadow:0 9px 28px rgba(0,0,0,.22);overflow:hidden}
+.panel{width:100%;container-type:inline-size;border:1px solid rgba(148,184,230,.17);border-radius:17px;background:radial-gradient(circle at 0 0,rgba(57,136,255,.18),transparent 42%),linear-gradient(125deg,#10233d,#0b1b30 75%);box-shadow:0 9px 28px rgba(0,0,0,.22);overflow:hidden}
 .entry{min-height:112px;display:flex;align-items:center;gap:14px;padding:16px 18px;position:relative}
 .entry:before,.widget:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(180deg,var(--cyan),var(--blue))}
 .entry-copy{min-width:0;flex:1}.entry-title{margin:0 0 5px;font-size:15px;font-weight:800}.entry-sub{margin:0;color:var(--muted);font-size:12px;line-height:1.4}
@@ -24,12 +24,14 @@ button:hover{filter:brightness(1.08);transform:translateY(-1px)}button:active{tr
 .details{min-width:0}.topline{display:flex;align-items:center;gap:8px;margin-bottom:7px}.live{display:inline-flex;align-items:center;gap:6px;color:#73d8ff;font-size:10px;font-weight:850;letter-spacing:1.25px;text-transform:uppercase}.live:before{content:"";width:6px;height:6px;border-radius:50%;background:#45d5ff;box-shadow:0 0 0 4px rgba(69,213,255,.12)}
 .station{color:var(--muted);font-size:11px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .artist{margin:0 0 3px;color:var(--text);font-size:16px;font-weight:800;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.track{display:block;margin:0;color:#b7c7dc;font-size:13px;line-height:1.35;overflow:hidden;white-space:nowrap;max-width:100%}.track-text{display:inline-block;white-space:nowrap}.track.scrolling .track-text{animation:track-marquee 16s linear infinite}@keyframes track-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.track{display:block;min-width:0;width:100%;margin:0;color:#b7c7dc;font-size:13px;line-height:1.35;overflow:hidden;white-space:nowrap}.track-text{display:inline-block;width:max-content;max-width:none;white-space:nowrap}.track.scrolling .track-text{padding-right:24px;animation:track-marquee var(--marquee-duration,18s) linear infinite}@keyframes track-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .action{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 15px;border:1px solid rgba(123,177,255,.28);border-radius:999px;color:white;text-decoration:none;background:linear-gradient(135deg,#2678ed,#3d9cff);box-shadow:0 6px 18px rgba(37,120,237,.24);font-size:12px;font-weight:800;white-space:nowrap;transition:transform .18s ease,filter .18s ease}
 .action:hover{transform:translateY(-2px);filter:brightness(1.09)}.action:active{transform:scale(.97)}.action svg{width:13px;height:13px;fill:currentColor}
 [hidden]{display:none!important}
-@media(max-width:480px){body{padding:6px}.entry{display:block;padding:14px}.entry-form{margin-top:10px}.entry-form button{padding:0 12px}.widget{grid-template-columns:68px minmax(0,1fr);gap:11px;padding:11px}.art{width:68px;height:68px;border-radius:11px}.artist{font-size:14px}.track{font-size:12px}.action{grid-column:1/-1;width:100%;min-height:38px}}
-@media(prefers-reduced-motion:reduce){button,.action{transition:none}}
+@container (max-width:560px){.widget{grid-template-columns:64px minmax(0,1fr);gap:10px;padding:11px}.art{width:64px;height:64px;border-radius:10px}.artist{font-size:14px}.track{font-size:12px}.action{grid-column:1/-1;justify-self:stretch;width:100%;min-width:0;min-height:38px;padding:0 12px;font-size:12px}}
+@container (max-width:340px){.widget{grid-template-columns:52px minmax(0,1fr);gap:8px;padding:9px}.art{width:52px;height:52px}.live{font-size:9px;letter-spacing:.8px}.topline{gap:6px}.artist{font-size:13px}.track{font-size:11px}.action{font-size:11px;gap:6px}}
+@media(max-width:480px){body{padding:6px}.entry{display:block;padding:14px}.entry-form{margin-top:10px}.entry-form button{padding:0 12px}}
+@media(prefers-reduced-motion:reduce){button,.action{transition:none}.track.scrolling .track-text{animation:none}}
 </style>
 </head>
 <body>
@@ -61,8 +63,21 @@ const params=new URLSearchParams(location.search);
 const initialStation=(params.get("station")||"").trim().toLowerCase();
 const form=$("station-form"),input=$("station-input"),entry=$("entry-screen"),widget=$("widget-screen");
 const stationEl=$("station"),artistEl=$("artist"),trackEl=$("track"),trackText=trackEl.querySelector(".track-text"),artEl=$("art"),openEl=$("open-player");
-let station="",stationLogo="",refreshTimer=null;
-function setTrack(value){const text=String(value||"Aktuell kein Titel verfügbar");trackEl.classList.remove("scrolling");trackText.textContent=text;requestAnimationFrame(()=>{if(trackText.scrollWidth>trackEl.clientWidth+4){trackText.textContent=text+"　　 •　　 "+text;trackEl.classList.add("scrolling")}else{trackText.textContent=text}})}
+let station="",stationLogo="",refreshTimer=null,currentTrack="Aktuell kein Titel verfügbar",trackMeasureFrame=0;
+function updateTrackLayout(){
+ cancelAnimationFrame(trackMeasureFrame);
+ trackMeasureFrame=requestAnimationFrame(()=>{
+  trackEl.classList.remove("scrolling");
+  trackText.textContent=currentTrack;
+  if(trackText.scrollWidth>trackEl.clientWidth+3){
+   trackText.textContent=currentTrack+"　　 •　　 "+currentTrack+"　　 •　　 ";
+   trackEl.style.setProperty("--marquee-duration",Math.max(12,Math.min(32,trackText.scrollWidth/24))+"s");
+   trackEl.classList.add("scrolling");
+  }
+ });
+}
+function setTrack(value){currentTrack=String(value||"Aktuell kein Titel verfügbar");updateTrackLayout()}
+if("ResizeObserver" in window){new ResizeObserver(updateTrackLayout).observe(trackEl)}
 input.value=initialStation;
 function showImage(url){
  if(!url){artEl.innerHTML='<span class="fallback" aria-hidden="true">♫</span>';return}
