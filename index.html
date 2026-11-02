@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#081426">
+<title>laut.fm Now Playing</title>
+<style>
+:root{color-scheme:dark;--text:#f4f8ff;--muted:#9db0ca;--blue:#3988ff;--cyan:#48d6f4}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;}body{padding:10px;background:transparent;color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+.panel{width:100%;border:1px solid rgba(148,184,230,.17);border-radius:17px;background:radial-gradient(circle at 0 0,rgba(57,136,255,.18),transparent 42%),linear-gradient(125deg,#10233d,#0b1b30 75%);box-shadow:0 9px 28px rgba(0,0,0,.22);overflow:hidden}
+.entry{min-height:112px;display:flex;align-items:center;gap:14px;padding:16px 18px;position:relative}
+.entry:before,.widget:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(180deg,var(--cyan),var(--blue))}
+.entry-copy{min-width:0;flex:1}.entry-title{margin:0 0 5px;font-size:15px;font-weight:800}.entry-sub{margin:0;color:var(--muted);font-size:12px;line-height:1.4}
+.entry-form{display:flex;gap:8px;margin-top:11px}
+input{min-width:0;flex:1;padding:10px 12px;border:1px solid rgba(148,184,230,.24);border-radius:10px;background:rgba(3,12,25,.65);color:var(--text);font:inherit;font-size:13px;outline:none}
+input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(57,136,255,.15)}
+button{border:0;border-radius:10px;padding:0 15px;color:#fff;background:linear-gradient(135deg,#2678ed,#3d9cff);font:inherit;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;box-shadow:0 6px 18px rgba(37,120,237,.24);transition:transform .18s ease,filter .18s ease}
+button:hover{filter:brightness(1.08);transform:translateY(-1px)}button:active{transform:scale(.97)}
+.error{margin:7px 0 0;color:#ffb8c0;font-size:11px}
+.widget{min-height:112px;display:grid;grid-template-columns:88px minmax(0,1fr) auto;align-items:center;gap:15px;padding:13px 16px 13px 13px;overflow:hidden;position:relative}
+.art{width:88px;height:88px;display:grid;place-items:center;overflow:hidden;border:1px solid rgba(255,255,255,.12);border-radius:13px;background:linear-gradient(145deg,#1b4778,#0b1930);box-shadow:0 5px 16px rgba(0,0,0,.25)}
+.art img{width:100%;height:100%;object-fit:cover;display:block}.fallback{color:#8dbbff;font-size:27px}
+.details{min-width:0}.topline{display:flex;align-items:center;gap:8px;margin-bottom:7px}.live{display:inline-flex;align-items:center;gap:6px;color:#73d8ff;font-size:10px;font-weight:850;letter-spacing:1.25px;text-transform:uppercase}.live:before{content:"";width:6px;height:6px;border-radius:50%;background:#45d5ff;box-shadow:0 0 0 4px rgba(69,213,255,.12)}
+.station{color:var(--muted);font-size:11px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.artist{margin:0 0 3px;color:var(--text);font-size:16px;font-weight:800;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.track{margin:0;color:#b7c7dc;font-size:13px;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.action{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 15px;border:1px solid rgba(123,177,255,.28);border-radius:999px;color:white;text-decoration:none;background:linear-gradient(135deg,#2678ed,#3d9cff);box-shadow:0 6px 18px rgba(37,120,237,.24);font-size:12px;font-weight:800;white-space:nowrap;transition:transform .18s ease,filter .18s ease}
+.action:hover{transform:translateY(-2px);filter:brightness(1.09)}.action:active{transform:scale(.97)}.action svg{width:13px;height:13px;fill:currentColor}
+[hidden]{display:none!important}
+@media(max-width:480px){body{padding:6px}.entry{display:block;padding:14px}.entry-form{margin-top:10px}.entry-form button{padding:0 12px}.widget{grid-template-columns:68px minmax(0,1fr);gap:11px;padding:11px}.art{width:68px;height:68px;border-radius:11px}.artist{font-size:14px}.track{font-size:12px}.action{grid-column:1/-1;width:100%;min-height:38px}}
+@media(prefers-reduced-motion:reduce){button,.action{transition:none}}
+</style>
+</head>
+<body>
+<main class="panel">
+<section class="entry" id="entry-screen">
+  <div class="entry-copy">
+    <h1 class="entry-title">Deinen laut.fm-Sender verbinden</h1>
+    <p class="entry-sub">Stationsnamen eingeben, um Titel und Cover anzuzeigen.</p>
+    <form class="entry-form" id="station-form">
+      <input id="station-input" type="text" name="station" placeholder="z. B. shout_fm" autocomplete="off" spellcheck="false" aria-label="laut.fm-Stationsname" required>
+      <button type="submit">Sender laden</button>
+    </form>
+    <p class="error" id="entry-error" role="alert"></p>
+  </div>
+</section>
+<section class="widget" id="widget-screen" aria-label="Aktueller laut.fm Titel" hidden>
+  <div class="art" id="art"><span class="fallback" aria-hidden="true">♫</span></div>
+  <section class="details" aria-live="polite">
+    <div class="topline"><span class="live">Now Playing</span><span class="station" id="station">laut.fm</span></div>
+    <p class="artist" id="artist">Lade Sender …</p><p class="track" id="track">Aktuelle Musikinformationen werden geladen</p>
+  </section>
+  <a class="action" id="open-player" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>Im Webplayer hören</a>
+</section>
+</main>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const params=new URLSearchParams(location.search);
+const initialStation=(params.get("station")||"").trim().toLowerCase();
+const form=$("station-form"),input=$("station-input"),entry=$("entry-screen"),widget=$("widget-screen");
+const stationEl=$("station"),artistEl=$("artist"),trackEl=$("track"),artEl=$("art"),openEl=$("open-player");
+let station="",stationLogo="",refreshTimer=null;
+input.value=initialStation;
+function showImage(url){
+ if(!url){artEl.innerHTML='<span class="fallback" aria-hidden="true">♫</span>';return}
+ const img=new Image();img.alt="Aktuelles Cover oder Senderlogo";
+ img.onload=()=>artEl.replaceChildren(img);
+ img.onerror=()=>{if(stationLogo&&url!==stationLogo)showImage(stationLogo);else artEl.innerHTML='<span class="fallback" aria-hidden="true">♫</span>'};
+ img.src=url;
+}
+async function loadStation(){
+ try{const r=await fetch("https://api.laut.fm/station/"+encodeURIComponent(station),{cache:"no-store"});if(!r.ok)throw Error("Station nicht gefunden");
+ const d=await r.json();stationEl.textContent=d.display_name||d.name||station;
+ stationLogo=d.images&&d.images.station?d.images.station:"";if(stationLogo)showImage(stationLogo);
+ }catch(e){stationEl.textContent=station;artistEl.textContent="Senderinformationen nicht verfügbar";trackEl.textContent="Stationsnamen bitte prüfen";console.warn(e)}
+}
+async function loadSong(){
+ try{const r=await fetch("https://api.laut.fm/station/"+encodeURIComponent(station)+"/current_song",{cache:"no-store"});if(!r.ok)throw Error("Titelinformationen nicht verfügbar");
+ const d=await r.json(),a=d.artist&&d.artist.name?d.artist.name:"";
+ artistEl.textContent=a||(d.type==="song"?"Titel läuft":"laut.fm Live");
+ trackEl.textContent=d.title||"Aktuell kein Titel verfügbar";
+ const cover=d.type==="song"&&d.artist?(d.artist.image||d.artist.thumb||""):"";showImage(cover||stationLogo);
+ }catch(e){artistEl.textContent="Titel momentan nicht verfügbar";trackEl.textContent="Bitte später erneut versuchen";if(stationLogo)showImage(stationLogo);console.warn(e)}
+}
+function openStation(value){
+ const chosen=String(value||"").trim().toLowerCase();
+ if(!/^[a-z0-9_-]{1,80}$/.test(chosen)){$("entry-error").textContent="Bitte einen gültigen laut.fm-Stationsnamen eingeben.";input.focus();return}
+ station=chosen;$("entry-error").textContent="";entry.hidden=true;widget.hidden=false;
+ const url=new URL(location.href);url.searchParams.set("station",station);history.replaceState({}, "", url);
+ openEl.href="https://lfm-player.github.io/stream.laut.fm/?station="+encodeURIComponent(station);
+ stationEl.textContent=station;artistEl.textContent="Lade aktuellen Titel …";trackEl.textContent="Senderinformationen werden geladen";stationLogo="";
+ showImage("");
+ loadStation();loadSong();
+ if(refreshTimer)clearInterval(refreshTimer);refreshTimer=setInterval(loadSong,15000);
+}
+form.addEventListener("submit",e=>{e.preventDefault();openStation(input.value)});
+if(initialStation)openStation(initialStation);
+</script>
+</body>
+</html>
