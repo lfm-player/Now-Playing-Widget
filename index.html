@@ -61,7 +61,8 @@ const params=new URLSearchParams(location.search);
 const initialStation=(params.get("station")||"").trim().toLowerCase();
 const form=$("station-form"),input=$("station-input"),entry=$("entry-screen"),widget=$("widget-screen");
 const stationEl=$("station"),artistEl=$("artist"),trackEl=$("track"),trackText=trackEl.querySelector(".track-text"),artEl=$("art"),openEl=$("open-player");
-let station="",stationLogo="",refreshTimer=null;\nfunction setTrack(value){const text=String(value||"Aktuell kein Titel verfügbar");trackEl.classList.remove("scrolling");trackText.textContent=text;requestAnimationFrame(()=>{if(trackText.scrollWidth>trackEl.clientWidth+4){trackText.textContent=text+"　　 •　　 "+text;trackEl.classList.add("scrolling")}else{trackText.textContent=text}})}
+let station="",stationLogo="",refreshTimer=null;
+function setTrack(value){const text=String(value||"Aktuell kein Titel verfügbar");trackEl.classList.remove("scrolling");trackText.textContent=text;requestAnimationFrame(()=>{if(trackText.scrollWidth>trackEl.clientWidth+4){trackText.textContent=text+"　　 •　　 "+text;trackEl.classList.add("scrolling")}else{trackText.textContent=text}})}
 input.value=initialStation;
 function showImage(url){
  if(!url){artEl.innerHTML='<span class="fallback" aria-hidden="true">♫</span>';return}
