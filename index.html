@@ -10,7 +10,7 @@
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;background:transparent!important}
 body{padding:10px;background:transparent!important;color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
-.panel{width:100%;container-type:inline-size;border:1px solid rgba(148,184,230,.17);border-radius:17px;background:radial-gradient(circle at 0 0,color-mix(in srgb,var(--blue) 18%,transparent),transparent 42%),linear-gradient(125deg,var(--panel-bg),var(--panel-bg2) 75%);box-shadow:0 9px 28px rgba(0,0,0,.22);overflow:hidden}
+.panel{width:100%;container-type:inline-size;border:1px solid rgba(148,184,230,.17);border-radius:17px;background:radial-gradient(circle at 0 0,color-mix(in srgb,var(--blue) 18%,transparent),transparent 42%),linear-gradient(125deg,var(--panel-bg),var(--panel-bg2) 75%);box-shadow:0 9px 28px rgba(0,0,0,.22);overflow:hidden}.panel.widget-mode{background:transparent!important;border:0!important;border-radius:0;box-shadow:none!important;overflow:visible}.panel.widget-mode .widget{border:1px solid rgba(148,184,230,.17);border-radius:17px;background:radial-gradient(circle at 0 0,color-mix(in srgb,var(--blue) 18%,transparent),transparent 42%),linear-gradient(125deg,var(--panel-bg),var(--panel-bg2) 75%);box-shadow:0 9px 28px rgba(0,0,0,.22)}
 .entry{min-height:112px;display:flex;align-items:center;gap:14px;padding:16px 18px;position:relative}
 .entry:before,.widget:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(180deg,var(--cyan),var(--blue))}
 .entry-copy{min-width:0;flex:1}.entry-title{margin:0 0 5px;font-size:15px;font-weight:800}.entry-sub{margin:0;color:var(--muted);font-size:12px;line-height:1.4}
@@ -64,7 +64,7 @@ button:hover{filter:brightness(1.08);transform:translateY(-1px)}button:active{tr
       <h2>Widget-Einstellungen</h2>
       <div class="field">
         <label for="builder-station">laut.fm-Stationsname</label>
-        <input id="builder-station" type="text" value="eins" autocomplete="off" spellcheck="false" placeholder="z. B. shout_fm">
+        <input id="builder-station" type="text" value="" autocomplete="off" spellcheck="false" placeholder="z. B. eins">
       </div>
       <div class="field">
         <label for="accent-picker">Akzentfarbe (Buttons, LIVE-Anzeige, Linie)</label>
@@ -88,7 +88,6 @@ button:hover{filter:brightness(1.08);transform:translateY(-1px)}button:active{tr
         <label for="text-picker">Schriftfarbe</label>
         <div class="color-row"><input id="text-hex" type="text" value="#f4f8ff" maxlength="7" aria-label="Hex-Farbwert Schrift"><input id="text-picker" type="color" value="#f4f8ff" aria-label="Schriftfarbe auswählen"></div>
       </div>
-      <label class="checkline"><input id="transparent-bg" type="checkbox"> Widget-Hintergrund transparent anzeigen</label>
     </section>
     <section class="preview-card">
       <h2>Live-Vorschau</h2>
@@ -213,19 +212,33 @@ function setupBuilder(){
   const base=new URL(location.href);
   base.search="";
   base.hash="";
-  base.searchParams.set("station",(stationInput.value.trim().toLowerCase()||"shout_fm"));
+  base.searchParams.set("station",(stationInput.value.trim().toLowerCase()||"eins"));
   base.searchParams.set("accent",cleanHex($("accent-hex").value,"#3988ff").slice(1));
   base.searchParams.set("bg",cleanHex($("bg-hex").value,"#10233d").slice(1));
   base.searchParams.set("text",cleanHex($("text-hex").value,"#f4f8ff").slice(1));
-  if($("transparent-bg").checked)base.searchParams.set("transparent","1");
   return base.href;
  }
  function update(){
   const url=makeUrl();
-  $("preview-frame").src=url;
+  const previewStation=(stationInput.value.trim().toLowerCase()||"eins").replace(/[^a-z0-9_-]/g,"");
+  const previewAccent=cleanHex($("accent-hex").value,"#3988ff");
+  const previewBg=cleanHex($("bg-hex").value,"#10233d");
+  const previewText=cleanHex($("text-hex").value,"#f4f8ff");
+
+  // Die Vorschau wird direkt im iframe aufgebaut. Das funktioniert auch dann,
+  // wenn der Generator lokal per file:// geöffnet wird.
+  const previewDoc='<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>'+
+    '*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:transparent!important}body{padding:2px;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:'+previewText+'}'+
+    '.card{min-height:112px;width:100%;display:grid;grid-template-columns:72px minmax(0,1fr) auto;align-items:center;gap:12px;padding:11px 13px;position:relative;overflow:hidden;border:1px solid rgba(148,184,230,.17);border-radius:15px;background:radial-gradient(circle at 0 0,'+previewAccent+'2e,transparent 42%),linear-gradient(125deg,'+previewBg+',color-mix(in srgb,'+previewBg+' 72%,#07101f) 75%);box-shadow:0 6px 18px rgba(0,0,0,.18)}'+
+    '.card:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(180deg,#48d6f4,'+previewAccent+')}.art{width:72px;height:72px;border-radius:11px;overflow:hidden;background:#18385e;display:grid;place-items:center}.art img{width:100%;height:100%;object-fit:cover}.fallback{font-size:25px;color:#48d6f4}.info{min-width:0}.top{font-size:10px;font-weight:850;letter-spacing:1px;text-transform:uppercase;color:#48d6f4;margin-bottom:6px}.station{color:#9db0ca;letter-spacing:0;text-transform:none;margin-left:5px}.artist{font-size:15px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}.track{font-size:12px;color:'+previewText+';opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.listen{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 14px;border-radius:30px;background:linear-gradient(135deg,'+previewAccent+',color-mix(in srgb,'+previewAccent+' 72%,white));color:white;font-size:12px;font-weight:800;white-space:nowrap;text-decoration:none}'+
+    '@media(max-width:420px){.card{grid-template-columns:56px minmax(0,1fr);gap:9px;padding:9px}.art{width:56px;height:56px}.listen{grid-column:1/-1;width:100%;min-height:36px}.artist{font-size:13px}}'+
+    '</style></head><body><div class="card"><div class="art" id="art"><span class="fallback">♫</span></div><div class="info"><div class="top">● NOW PLAYING <span class="station" id="station">'+previewStation+'</span></div><div class="artist" id="artist">Lade Sender …</div><div class="track" id="track">Aktueller Titel wird geladen</div></div><a class="listen" id="listen" target="_blank" rel="noopener">▶ Im Webplayer hören</a></div>'+
+    '<script>(async()=>{const name='+JSON.stringify(previewStation)+';const q=new URLSearchParams({station:name,accent:'+JSON.stringify(previewAccent.slice(1))+',bg:'+JSON.stringify(previewBg.slice(1))+',text:'+JSON.stringify(previewText.slice(1))+'});document.getElementById("listen").href="https://lfm-player.github.io/stream.laut.fm/?"+q.toString();try{const r=await fetch("https://api.laut.fm/station/"+encodeURIComponent(name)+"/current_song");if(!r.ok)throw Error();const d=await r.json();document.getElementById("artist").textContent=d.artist&&d.artist.name?d.artist.name:"laut.fm Live";document.getElementById("track").textContent=d.title||"Aktuell kein Titel verfügbar";const image=d.artist&&(d.artist.image||d.artist.thumb);if(image){const img=new Image();img.src=image;img.onload=()=>document.getElementById("art").replaceChildren(img)}}catch(e){document.getElementById("artist").textContent="Sender nicht erreichbar";document.getElementById("track").textContent="Stationsnamen bitte prüfen"}})();<\/script></body></html>';
+  $("preview-frame").srcdoc=previewDoc;
+
   const escaped=url.replace(/&/g,"&amp;").replace(/"/g,"&quot;");
   $("embed-code").value='<iframe src="'+escaped+'" width="100%" height="150" style="border:0;max-width:100%;" scrolling="no" loading="lazy" title="laut.fm Webradio"></iframe>';
-  document.documentElement.style.setProperty("--blue",cleanHex($("accent-hex").value,"#3988ff"));
+  document.documentElement.style.setProperty("--blue",previewAccent);
  }
  fields.forEach(([key,def])=>{
   const picker=$(key+"-picker"),hex=$(key+"-hex");
@@ -247,7 +260,7 @@ function setupBuilder(){
  });
  update();
 }
-if(initialStation){applyTheme();openStation(initialStation)}else{entry.hidden=true;setupBuilder()}
+if(initialStation){$(".panel").classList.add("widget-mode");applyTheme();openStation(initialStation)}else{entry.hidden=true;setupBuilder()}
 </script>
 </body>
 </html>
