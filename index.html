@@ -7,7 +7,7 @@
 <title>laut.fm Now Playing</title>
 <style>
 :root{color-scheme:dark;--text:#f4f8ff;--muted:#9db0ca;--blue:#3988ff;--cyan:#48d6f4}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;}body{padding:10px;background:transparent;color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:transparent;}body{padding:10px;background:transparent;color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
 .panel{width:100%;border:1px solid rgba(148,184,230,.17);border-radius:17px;background:radial-gradient(circle at 0 0,rgba(57,136,255,.18),transparent 42%),linear-gradient(125deg,#10233d,#0b1b30 75%);box-shadow:0 9px 28px rgba(0,0,0,.22);overflow:hidden}
 .entry{min-height:112px;display:flex;align-items:center;gap:14px;padding:16px 18px;position:relative}
 .entry:before,.widget:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(180deg,var(--cyan),var(--blue))}
@@ -39,7 +39,7 @@ button:hover{filter:brightness(1.08);transform:translateY(-1px)}button:active{tr
     <h1 class="entry-title">Deinen laut.fm-Sender verbinden</h1>
     <p class="entry-sub">Stationsnamen eingeben, um Titel und Cover anzuzeigen.</p>
     <form class="entry-form" id="station-form">
-      <input id="station-input" type="text" name="station" placeholder="z. B. shout_fm" autocomplete="off" spellcheck="false" aria-label="laut.fm-Stationsname" required>
+      <input id="station-input" type="text" name="station" placeholder="z. B. eins" autocomplete="off" spellcheck="false" aria-label="laut.fm-Stationsname" required>
       <button type="submit">Sender laden</button>
     </form>
     <p class="error" id="entry-error" role="alert"></p>
