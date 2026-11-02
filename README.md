@@ -23,7 +23,7 @@ https://lfm-player.github.io/Now-Playing-Widget/
 Wenn du das Widget für deinen eigenen Radiosender einbauen möchtest, kannst du den Stationsnamen direkt in der URL hinterlegen.
 
 Beispiel für den Sender eins:
-
+```html
 <iframe
   src="https://lfm-player.github.io/Now-Playing-Widget/?station=eins"
   width="100%"
@@ -32,7 +32,7 @@ Beispiel für den Sender eins:
   loading="lazy"
   title="Now Playing">
 </iframe>
-
+```
 
 Ersetze eins einfach durch den Namen deines eigenen laut.fm-Senders.
 
