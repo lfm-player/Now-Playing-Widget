@@ -64,7 +64,7 @@ button:hover{filter:brightness(1.08);transform:translateY(-1px)}button:active{tr
       <h2>Widget-Einstellungen</h2>
       <div class="field">
         <label for="builder-station">laut.fm-Stationsname</label>
-        <input id="builder-station" type="text" value="shout_fm" autocomplete="off" spellcheck="false" placeholder="z. B. shout_fm">
+        <input id="builder-station" type="text" value="eins" autocomplete="off" spellcheck="false" placeholder="z. B. shout_fm">
       </div>
       <div class="field">
         <label for="accent-picker">Akzentfarbe (Buttons, LIVE-Anzeige, Linie)</label>
@@ -185,7 +185,17 @@ function openStation(value){
  if(!/^[a-z0-9_-]{1,80}$/.test(chosen)){$("entry-error").textContent="Bitte einen gültigen laut.fm-Stationsnamen eingeben.";input.focus();return}
  station=chosen;$("entry-error").textContent="";entry.hidden=true;widget.hidden=false;
  const url=new URL(location.href);url.searchParams.set("station",station);history.replaceState({}, "", url);
- openEl.href="https://lfm-player.github.io/stream.laut.fm/?station="+encodeURIComponent(station);
+ // Gewählte Widget-Farben an den eigenständigen Universal Player weitergeben.
+ const playerUrl = new URL("https://lfm-player.github.io/stream.laut.fm/");
+ playerUrl.searchParams.set("station", station);
+ const selectedAccent = params.get("accent") || "4d7cfe";
+ const selectedBg = params.get("bg") || "121a2f";
+ const selectedText = params.get("text") || "f5f7fb";
+ if (/^[0-9a-f]{6}$/i.test(selectedAccent.replace("#",""))) playerUrl.searchParams.set("accent", selectedAccent.replace("#",""));
+ if (/^[0-9a-f]{6}$/i.test(selectedBg.replace("#",""))) playerUrl.searchParams.set("bg", selectedBg.replace("#",""));
+ if (/^[0-9a-f]{6}$/i.test(selectedText.replace("#",""))) playerUrl.searchParams.set("text", selectedText.replace("#",""));
+ if (params.get("transparent") === "1") playerUrl.searchParams.set("transparent", "1");
+ openEl.href = playerUrl.toString();
  stationEl.textContent=station;artistEl.textContent="Lade aktuellen Titel …";setTrack("Senderinformationen werden geladen");stationLogo="";
  showImage("");
  loadStation();loadSong();
