@@ -24,14 +24,7 @@ Wenn du das Widget für deinen eigenen Radiosender einbauen möchtest, kannst du
 
 Beispiel für den Sender eins:
 ```html
-<iframe
-  src="https://lfm-player.github.io/Now-Playing-Widget/?station=eins"
-  width="100%"
-  height="140"
-  style="border:0; max-width:640px;"
-  loading="lazy"
-  title="Now Playing">
-</iframe>
+<iframe src="https://lfm-player.github.io/Now-Playing-Widget/?station=eins&amp;accent=3988ff&amp;bg=10233d&amp;text=f4f8ff" width="100%" height="150" style="display:block;border:0;background:transparent;max-width:100%;" allowtransparency="true" scrolling="no" loading="lazy" title="laut.fm Webradio"></iframe>
 ```
 
 Ersetze eins einfach durch den Namen deines eigenen laut.fm-Senders.
