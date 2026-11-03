@@ -42,7 +42,7 @@ Ersetze eins einfach durch den Namen deines eigenen laut.fm-Senders.
 
 Tipp: Passe bei Bedarf die Höhe (height) und die maximale Breite (max-width) an das Design deiner Homepage an.
 
-## Das bietet dir das Widget
+## 🚀 Das bietet dir das Widget
 
 - Anzeige deines laut.fm-Sendernamens
 - Aktueller Interpret und Musiktitel
@@ -51,6 +51,18 @@ Tipp: Passe bei Bedarf die Höhe (height) und die maximale Breite (max-width) an
 - Direkter Zugang zum Universal laut.fm Webplayer
 - Modernes, responsives Design für PC, Tablet und Smartphone
 - Einfache Einbindung über HTML-iframe
+
+## 📡 Datenquellen
+
+Die Senderinformationen und Musiktitel werden über die offizielle laut.fm-API abgerufen.
+
+API-Endpunkte:
+
+- Stationsinformationen: `https://api.laut.fm/station/{station}`
+- Aktueller Titel: `https://api.laut.fm/station/{station}/current_song`
+- Cover Anzeige: `https://api.laut.fm/station/{station}/cover` 
+
+Die Audiowiedergabe erfolgt über den jeweiligen laut.fm-Stream.
 
 ## 🔧 Verwendete Technologien
 
