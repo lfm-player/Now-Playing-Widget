@@ -6,11 +6,11 @@
 <meta name="theme-color" content="#081426">
 <title>laut.fm Widget-Generator</title>
 <style>
-:root{--text:#f4f8ff;--muted:#9db0ca;--blue:#3988ff;--cyan:#48d6f4;--panel-bg:#10233d;--panel-bg2:#0b1b30;--page:#07101f}
+:root{color-scheme:dark;--text:#f4f8ff;--muted:#9db0ca;--blue:#3988ff;--cyan:#48d6f4;--panel-bg:#10233d;--panel-bg2:#0b1b30;--page:#07101f}
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:transparent!important;background-color:transparent!important;background-image:none!important}
+html,body{margin:0;min-height:100%;background:transparent!important}
 body{padding:10px;background:transparent!important;color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
-.panel.embed-transparent{background:transparent!important;background-color:transparent!important;background-image:none!important;border-color:transparent!important;box-shadow:none!important}.panel{width:100%;container-type:inline-size;border:1px solid rgba(148,184,230,.17);border-radius:17px;background:radial-gradient(circle at 0 0,color-mix(in srgb,var(--blue) 18%,transparent),transparent 42%),linear-gradient(125deg,var(--panel-bg),var(--panel-bg2) 75%);box-shadow:0 9px 28px rgba(0,0,0,.22);overflow:hidden}
+.panel{width:100%;container-type:inline-size;border:1px solid rgba(148,184,230,.17);border-radius:17px;background:radial-gradient(circle at 0 0,color-mix(in srgb,var(--blue) 18%,transparent),transparent 42%),linear-gradient(125deg,var(--panel-bg),var(--panel-bg2) 75%);box-shadow:0 9px 28px rgba(0,0,0,.22);overflow:hidden}
 .entry{min-height:112px;display:flex;align-items:center;gap:14px;padding:16px 18px;position:relative}
 .entry:before,.widget:before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(180deg,var(--cyan),var(--blue))}
 .entry-copy{min-width:0;flex:1}.entry-title{margin:0 0 5px;font-size:15px;font-weight:800}.entry-sub{margin:0;color:var(--muted);font-size:12px;line-height:1.4}
@@ -88,6 +88,7 @@ button:hover{filter:brightness(1.08);transform:translateY(-1px)}button:active{tr
         <label for="text-picker">Schriftfarbe</label>
         <div class="color-row"><input id="text-hex" type="text" value="#f4f8ff" maxlength="7" aria-label="Hex-Farbwert Schrift"><input id="text-picker" type="color" value="#f4f8ff" aria-label="Schriftfarbe auswählen"></div>
       </div>
+      <label class="checkline"><input id="transparent-bg" type="checkbox"> Widget-Hintergrund transparent anzeigen</label>
     </section>
     <section class="preview-card">
       <h2>Live-Vorschau</h2>
@@ -138,7 +139,7 @@ function applyTheme(){
  if(/^[0-9a-f]{6}$/i.test(bg))document.documentElement.style.setProperty("--panel-bg","#"+bg);
  if(/^[0-9a-f]{6}$/i.test(text))document.documentElement.style.setProperty("--text","#"+text);
  if(/^[0-9a-f]{6}$/i.test(cyan))document.documentElement.style.setProperty("--cyan","#"+cyan);
- const outerPanel=document.querySelector(".panel");outerPanel.classList.add("embed-transparent");
+ if(params.get("transparent")==="1"){$(".panel").style.background="transparent";$(".panel").style.boxShadow="none";$(".panel").style.borderColor="transparent"}
 }
 const form=$("station-form"),input=$("station-input"),entry=$("entry-screen"),widget=$("widget-screen");
 const stationEl=$("station"),artistEl=$("artist"),trackEl=$("track"),trackText=trackEl.querySelector(".track-text"),artEl=$("art"),openEl=$("open-player");
@@ -193,7 +194,7 @@ function openStation(value){
  if (/^[0-9a-f]{6}$/i.test(selectedAccent.replace("#",""))) playerUrl.searchParams.set("accent", selectedAccent.replace("#",""));
  if (/^[0-9a-f]{6}$/i.test(selectedBg.replace("#",""))) playerUrl.searchParams.set("bg", selectedBg.replace("#",""));
  if (/^[0-9a-f]{6}$/i.test(selectedText.replace("#",""))) playerUrl.searchParams.set("text", selectedText.replace("#",""));
- 
+ if (params.get("transparent") === "1") playerUrl.searchParams.set("transparent", "1");
  openEl.href = playerUrl.toString();
  stationEl.textContent=station;artistEl.textContent="Lade aktuellen Titel …";setTrack("Senderinformationen werden geladen");stationLogo="";
  showImage("");
@@ -216,7 +217,7 @@ function setupBuilder(){
   base.searchParams.set("accent",cleanHex($("accent-hex").value,"#3988ff").slice(1));
   base.searchParams.set("bg",cleanHex($("bg-hex").value,"#10233d").slice(1));
   base.searchParams.set("text",cleanHex($("text-hex").value,"#f4f8ff").slice(1));
-  
+  if($("transparent-bg").checked)base.searchParams.set("transparent","1");
   return base.href;
  }
  function update(){
@@ -233,7 +234,7 @@ function setupBuilder(){
   hex.addEventListener("input",()=>{if(validColor(hex.value)){picker.value=hex.value;update()}});
  });
  stationInput.addEventListener("input",update);
- 
+ $("transparent-bg").addEventListener("change",update);
  document.querySelectorAll(".preset").forEach(btn=>btn.addEventListener("click",()=>{
   const c=btn.dataset.color;$("accent-picker").value=c;$("accent-hex").value=c;
   document.querySelectorAll(".preset").forEach(b=>b.setAttribute("aria-pressed",String(b===btn)));
