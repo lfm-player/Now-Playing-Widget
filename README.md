@@ -52,3 +52,19 @@ Tipp: Passe bei Bedarf die Höhe (height) und die maximale Breite (max-width) an
 - Modernes, responsives Design für PC, Tablet und Smartphone
 - Einfache Einbindung über HTML-iframe
 
+## 🌍 Hosting
+
+Der Webplayer wird über **GitHub Pages** bereitgestellt.
+
+Das Projekt ist als statische Website umgesetzt und benötigt keinen eigenen Webserver mit serverseitiger Programmlogik.
+
+## 📄 Lizenz und Hinweise
+
+Dieses Projekt ist ein unabhängiges Now Playing Widget Anzeige-Projekt zur Titelanzeige von laut.fm-Radiosendern.
+
+laut.fm ist eine eigenständige Plattform. Markenrechte und Rechte an den bereitgestellten Inhalten verbleiben bei den jeweiligen Rechteinhabern.
+
+Die Verfügbarkeit der Senderinformationen, Coverbilder und Audiostreams hängt von laut.fm und den jeweiligen Datenquellen ab.
+
+---
+
