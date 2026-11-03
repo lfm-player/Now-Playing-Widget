@@ -2,7 +2,7 @@
 
 Mit dem kostenlosen laut.fm Now Playing Widget kannst du deinen Radiosender ganz einfach auf deiner eigenen Homepage präsentieren.
 
-Das Widget zeigt automatisch, welcher Sender gerade läuft, welcher Interpret zu hören ist und wie der aktuelle Musiktitel heißt. Dazu wird das passende Künstlerbild oder – falls keines verfügbar ist – das Senderlogo angezeigt.
+Das Widget zeigt automatisch, welcher Sender gerade läuft, welcher Interpret zu hören ist und wie der aktuelle Musiktitel heißt. Dazu wird das passende Künstlerbild oder – falls keines verfügbar ist das Senderlogo angezeigt.
 
 **Kostenlos, unkompliziert und ohne eigene technische Infrastruktur.**
 
