@@ -10,6 +10,7 @@ Das Widget spielt selbst keine Musik ab. Die Wiedergabe erfolgt über den Univer
 
 🌐 **Live ausprobieren:**  
 https://lfm-player.github.io/Now-Playing-Widget/
+
 Die Verwendung erfolgt auf eigene Gefahr!!
 
 ## So funktioniert es
