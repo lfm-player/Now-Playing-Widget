@@ -13,14 +13,14 @@ https://lfm-player.github.io/Now-Playing-Widget/
 
 Die Verwendung erfolgt auf eigene Gefahr!!
 
-## So funktioniert es
+## ✨ So funktioniert es
 
 1. Öffne das Widget.
 2. Gib den Namen deines laut.fm-Senders ein, zum Beispiel `eins`.
 3. Das Widget lädt automatisch deine Senderinformationen und den aktuell gespielten Titel.
 4. Über **„Im Webplayer hören“** können deine Besucher deinen Sender direkt im Universal laut.fm Webplayer anhören.
 
-## Für deine Homepage
+## 🚀 Für deine Homepage
 
 Wenn du das Widget für deinen eigenen Radiosender einbauen möchtest, kannst du den Stationsnamen direkt in der URL hinterlegen.
 
@@ -52,9 +52,21 @@ Tipp: Passe bei Bedarf die Höhe (height) und die maximale Breite (max-width) an
 - Modernes, responsives Design für PC, Tablet und Smartphone
 - Einfache Einbindung über HTML-iframe
 
+## 🔧 Verwendete Technologien
+
+- HTML5
+- CSS3
+- JavaScript
+- laut.fm API
+- laut.fm Audio-Streaming
+- GitHub Pages
+- Nutzt Universal laut.fm Webplayer nach klick auf "Im Webplayer öffnen" öffnet sich ein neuer externer Player.
+
+Das Widget benötigt keine eigene Datenbank und kein PHP-Backend.
+
 ## 🌍 Hosting
 
-Der Webplayer wird über **GitHub Pages** bereitgestellt.
+Das Now Playing Widget wird über **GitHub Pages** bereitgestellt.
 
 Das Projekt ist als statische Website umgesetzt und benötigt keinen eigenen Webserver mit serverseitiger Programmlogik.
 
@@ -67,4 +79,4 @@ laut.fm ist eine eigenständige Plattform. Markenrechte und Rechte an den bereit
 Die Verfügbarkeit der Senderinformationen, Coverbilder und Audiostreams hängt von laut.fm und den jeweiligen Datenquellen ab.
 
 ---
-
+Nutzt Universal laut.fm Webplayer https://github.com/lfm-player/stream.laut.fm
