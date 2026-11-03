@@ -88,7 +88,7 @@ button:hover{filter:brightness(1.08);transform:translateY(-1px)}button:active{tr
         <label for="text-picker">Schriftfarbe</label>
         <div class="color-row"><input id="text-hex" type="text" value="#f4f8ff" maxlength="7" aria-label="Hex-Farbwert Schrift"><input id="text-picker" type="color" value="#f4f8ff" aria-label="Schriftfarbe auswählen"></div>
       </div>
-      <label class="checkline"><input id="transparent-bg" type="checkbox"> Widget-Hintergrund transparent anzeigen</label>
+
     </section>
     <section class="preview-card">
       <h2>Live-Vorschau</h2>
@@ -139,7 +139,7 @@ function applyTheme(){
  if(/^[0-9a-f]{6}$/i.test(bg))document.documentElement.style.setProperty("--panel-bg","#"+bg);
  if(/^[0-9a-f]{6}$/i.test(text))document.documentElement.style.setProperty("--text","#"+text);
  if(/^[0-9a-f]{6}$/i.test(cyan))document.documentElement.style.setProperty("--cyan","#"+cyan);
- if(params.get("transparent")==="1"){$(".panel").style.background="transparent";$(".panel").style.boxShadow="none";$(".panel").style.borderColor="transparent"}
+ const panel=document.querySelector(".panel");panel.style.background="transparent";panel.style.boxShadow="none";panel.style.borderColor="transparent";
 }
 const form=$("station-form"),input=$("station-input"),entry=$("entry-screen"),widget=$("widget-screen");
 const stationEl=$("station"),artistEl=$("artist"),trackEl=$("track"),trackText=trackEl.querySelector(".track-text"),artEl=$("art"),openEl=$("open-player");
@@ -194,7 +194,7 @@ function openStation(value){
  if (/^[0-9a-f]{6}$/i.test(selectedAccent.replace("#",""))) playerUrl.searchParams.set("accent", selectedAccent.replace("#",""));
  if (/^[0-9a-f]{6}$/i.test(selectedBg.replace("#",""))) playerUrl.searchParams.set("bg", selectedBg.replace("#",""));
  if (/^[0-9a-f]{6}$/i.test(selectedText.replace("#",""))) playerUrl.searchParams.set("text", selectedText.replace("#",""));
- if (params.get("transparent") === "1") playerUrl.searchParams.set("transparent", "1");
+ 
  openEl.href = playerUrl.toString();
  stationEl.textContent=station;artistEl.textContent="Lade aktuellen Titel …";setTrack("Senderinformationen werden geladen");stationLogo="";
  showImage("");
@@ -217,7 +217,7 @@ function setupBuilder(){
   base.searchParams.set("accent",cleanHex($("accent-hex").value,"#3988ff").slice(1));
   base.searchParams.set("bg",cleanHex($("bg-hex").value,"#10233d").slice(1));
   base.searchParams.set("text",cleanHex($("text-hex").value,"#f4f8ff").slice(1));
-  if($("transparent-bg").checked)base.searchParams.set("transparent","1");
+  
   return base.href;
  }
  function update(){
@@ -234,7 +234,7 @@ function setupBuilder(){
   hex.addEventListener("input",()=>{if(validColor(hex.value)){picker.value=hex.value;update()}});
  });
  stationInput.addEventListener("input",update);
- $("transparent-bg").addEventListener("change",update);
+ 
  document.querySelectorAll(".preset").forEach(btn=>btn.addEventListener("click",()=>{
   const c=btn.dataset.color;$("accent-picker").value=c;$("accent-hex").value=c;
   document.querySelectorAll(".preset").forEach(b=>b.setAttribute("aria-pressed",String(b===btn)));
