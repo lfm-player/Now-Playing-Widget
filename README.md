@@ -86,7 +86,7 @@ Das Now Playing Widget wird über **GitHub Pages** bereitgestellt.
 
 Das Projekt ist als statische Website umgesetzt und benötigt keinen eigenen Webserver mit serverseitiger Programmlogik.
 
-## 🔒 Datenschutz – Hinweis für Webseitenbetreiber
+## 🔒 Hinweis für Webseitenbetreiber
 
 Wenn du das laut.fm Now Playing Widget über einen HTML-iframe in deine eigene Webseite einbindest, solltest du dies in deiner Datenschutzerklärung berücksichtigen.
 
