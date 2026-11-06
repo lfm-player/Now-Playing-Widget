@@ -116,6 +116,29 @@ laut.fm ist eine eigenständige Plattform. Markenrechte und Rechte an den bereit
 
 Die Verfügbarkeit der Senderinformationen, Coverbilder und Audiostreams hängt von laut.fm und den jeweiligen Datenquellen ab.
 
+## 🔒 Datenschutzhinweise
+
+Dieses Projekt verwendet die öffentliche laut.fm-API, um Informationen zum Sendeplan und zum ausgewählten Radiosender abzurufen.
+
+Beim Zugriff auf die laut.fm-API können technische Informationen an laut.fm übertragen werden. Dazu können insbesondere die IP-Adresse, Informationen zum verwendeten Webbrowser, das Betriebssystem und weitere technische Daten gehören.
+
+Diese Datenübertragung erfolgt im Rahmen der technischen Nutzung der laut.fm-API.
+
+Weitere Informationen zur Verarbeitung personenbezogener Daten findest du in der Datenschutzerklärung und Impressum von laut.fm.
+
+Datenschutzerklärung und Impressum von laut.fm: https://laut.fm/pages/privacy
+
+Weitere Informationen zur laut.fm-API: https://docs.api.laut.fm/
+
+## ⚖️ Rechtliche Hinweise
+
+Dieses Projekt ist ein eigenständiges, nicht kommerzielles Hobbyprojekt und wird unabhängig unter dem Namen **lfm-player** entwickelt und bereitgestellt.
+
+Es besteht keine offizielle Verbindung, Partnerschaft oder Zusammenarbeit mit laut.fm, LAUT AG oder GitHub. Das Projekt wird von diesen Unternehmen weder unterstützt noch offiziell empfohlen.
+
+Alle genannten Marken, Produktnamen und Dienstleistungsbezeichnungen sind Eigentum der jeweiligen Rechteinhaber.
+
+*2026 lfm-player.Die Verwendung erfolgt auf eigene Gefahr!*
 ---
 
 Nutzt Universal laut.fm Webplayer:  
